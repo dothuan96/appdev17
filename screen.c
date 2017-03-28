@@ -28,7 +28,7 @@ void clearScreen(void)
 void displayBar(double rms, int col)
 {
 	int i;
-	for(i=0; i<rms/90; i++) 	//rms is very big
+	for(i=0; i<rms/100; i++) 	//rms is very big
 	{
 		gotoXY(i+2, col);
 #ifndef UNICODE		//ifndef mean if not define

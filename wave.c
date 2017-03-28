@@ -79,10 +79,13 @@ void fillID(const char *s, char duration[])
 		duration[i] = *s++;
 }
 
+//Only 8 pieces of RMS data are sent to server as Fast Mode of SoundLevel Meter (SLM)
 void displayWAVdata(short int d[])
 {
 	int i, j;
-	double sum200, rms200;
+	double sum200, rms200, max200=0.0, min200=20000.0																			;
+	//following variables are used to calculate RMS200 (fast Leq values)
+	double Leqf[8], sum2000=0.0;
 	for(i=0; i<80; ++i)
 	{
 		sum200 = 0.0;		//initialize the accumlateor
@@ -91,7 +94,21 @@ void displayWAVdata(short int d[])
 			sum200 += (*d)*(*d);
 			d++;		//treat d as a pointer, pointer increament
 		}
+		sum2000 += sum200;
+		if(i%10 == 9)		//for every 10 pieces of rms200, we get a rms2000
+		{
+			Leqf[1/10] = sqrt(sum2000/SAMPLE_RATE/8);
+			sum2000 = 0.0;		//reset sum2000
+		}
 		rms200 = sqrt(sum200/(SAMPLE_RATE/80));
+
+	//find decibel value of sound using logrithm
+        rms200 = 20*log(rms200);
+	//please find maximum and minimum value of rms200
+	if(rms200 < min200)
+		min200 = rms200;
+	else if(rms200 > max200)
+		max200 = rms200;
 
 #ifdef DEBUG		//condition compiling
 		printf("%d %10.2f ", i, rms200);
@@ -99,4 +116,12 @@ void displayWAVdata(short int d[])
 		displayBar(rms200, i+1);
 #endif
 	}
+	//display max200 and min200 in debug mode
+#ifdef DEBUG
+	printf("\nmin= %.2f, max = %.2f\n", min200, max200);
+#endif
+
+#ifdef COMM	//only in the case COMM is defined, send data to sever
+	send_data_curl(Leqf);
+#endif
 }
