@@ -16,6 +16,7 @@ void send_data_curl(double Leq[])
 		sprintf(temp, (i==7)?"%.2f":"%.2f;", Leq[i]);
 		strcat(postdata, temp);		//append temp to postdata
 	}
+	printf("%s\n", postdata);
 	//postdata is ready
 	curl_global_init(CURL_GLOBAL_ALL);
         curl = curl_easy_init();
@@ -27,6 +28,7 @@ void send_data_curl(double Leq[])
                 if(res != CURLE_OK)
                 {
 			 fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+			 curl_easy_strerror(res);
                 }
                 curl_easy_cleanup(curl);
         }

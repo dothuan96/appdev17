@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "screen.h"
+#include "comm.h"
 
 void testTone(int freq, double duration)
 {
@@ -97,13 +98,13 @@ void displayWAVdata(short int d[])
 		sum2000 += sum200;
 		if(i%10 == 9)		//for every 10 pieces of rms200, we get a rms2000
 		{
-			Leqf[1/10] = sqrt(sum2000/SAMPLE_RATE/8);
+			Leqf[i/10] = sqrt(sum2000/SAMPLE_RATE/8);
 			sum2000 = 0.0;		//reset sum2000
 		}
 		rms200 = sqrt(sum200/(SAMPLE_RATE/80));
 
 	//find decibel value of sound using logrithm
-        rms200 = 20*log(rms200);
+//rms200 = 20*log(rms200);
 	//please find maximum and minimum value of rms200
 	if(rms200 < min200)
 		min200 = rms200;
