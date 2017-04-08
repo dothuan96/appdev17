@@ -19,8 +19,8 @@ The USB sound card has to be set as default audio device. To do so, you need to 
 - Raspberry Pi3 mainboard is able to connet with USB sound card by USB gates. USB sound card has 2 interface for micro and headphone,
 so that tou allowed to working with audio from your computer or the sound from real time.
 - In order to use USB sound card you should:
-.Checking the USB sound card is connected or not by using "lsusb" command.
-.Run the command "sudo nano /etc/asound.conf" and put the following content to the file:
++ Checking the USB sound card is connected or not by using "lsusb" command.
++ Run the command "sudo nano /etc/asound.conf" and put the following content to the file:
         pcm.!default {
           type plug
           slave {
@@ -31,8 +31,8 @@ so that tou allowed to working with audio from your computer or the sound from r
             type hw
             card 1
         }
-.Back to home, then run the command "nano .asoundrc" and put the same content to the file.
-.Run the command "alsamixer" to see and make sure that the USB sound card is the default audio device.
++ Back to home, then run the command "nano .asoundrc" and put the same content to the file.
++ Run the command "alsamixer" to see and make sure that the USB sound card is the default audio device.
 
 For the newest version of Raspbian (a.k.a. Jessie) come with new version of alsa-utils (1.0.28), which has a bug while recoding.
 We can fix that problem by downgrading the ealier version of alsa-utils (1.0.25). Following below step:
